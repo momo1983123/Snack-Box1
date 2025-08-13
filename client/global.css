@@ -179,6 +179,14 @@
     margin: 0 auto;
     contain: layout style paint;
     max-height: 580px; /* Constrain iframe height */
+    /* Remove scrollbars */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  /* Hide scrollbars for WebKit browsers */
+  .tiktok-embed-container iframe::-webkit-scrollbar {
+    display: none;
   }
 
   .tiktok-embed {
