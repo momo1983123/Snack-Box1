@@ -202,6 +202,33 @@ export default function Index() {
     };
   }, []);
 
+  // Reinitialize TikTok embeds when the section becomes visible
+  useEffect(() => {
+    const tiktokSection = document.querySelector('.tiktok-section');
+    if (!tiktokSection) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Wait a bit, then try to reinitialize
+            setTimeout(() => {
+              if ((window as any).tiktokEmbed?.lib?.render) {
+                console.log('Reinitializing TikTok embeds on section visibility');
+                (window as any).tiktokEmbed.lib.render();
+              }
+            }, 500);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(tiktokSection);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen bg-blue-50">
       {/* Hero Section */}
