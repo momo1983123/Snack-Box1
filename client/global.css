@@ -184,6 +184,8 @@
   .tiktok-embed {
     display: flex;
     justify-content: center;
+    height: 100%;
+    overflow: hidden;
   }
 
   .tiktok-embed blockquote {
@@ -191,6 +193,8 @@
     padding: 0 !important;
     border: none !important;
     background: transparent !important;
+    max-height: 580px !important; /* Constrain blockquote height */
+    overflow: hidden !important;
   }
 
   .card-enhanced {
