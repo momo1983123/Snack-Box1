@@ -442,7 +442,7 @@ export default function Index() {
       <TestimonialsCarousel />
       {/* TikTok Videos Section */}
       <section
-        className="py-12 px-4 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden"
+        className="tiktok-section py-12 px-4 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden"
         style={{
           background:
             "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
