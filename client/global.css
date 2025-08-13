@@ -149,6 +149,14 @@
     will-change: transform;
     height: 600px; /* Fixed height to cut off text content */
     overflow: hidden; /* Hide content that extends beyond the height */
+    /* Remove scrollbars */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  /* Hide scrollbars for WebKit browsers */
+  .tiktok-embed-container::-webkit-scrollbar {
+    display: none;
   }
 
   /* Hide TikTok text content while preserving functionality */
