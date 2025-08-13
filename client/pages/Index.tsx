@@ -119,15 +119,87 @@ export default function Index() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Initialize TikTok embeds with improved performance
+  // Robust TikTok embed initialization
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if ((window as any).tiktokEmbed?.lib?.render) {
-        (window as any).tiktokEmbed.lib.render();
-      }
-    }, 500);
+    let retryCount = 0;
+    const maxRetries = 10;
 
-    return () => clearTimeout(timer);
+    const loadTikTokScript = () => {
+      return new Promise<void>((resolve, reject) => {
+        // Check if script already exists
+        const existingScript = document.querySelector('script[src*="tiktok.com/embed.js"]');
+        if (existingScript) {
+          existingScript.remove();
+        }
+
+        // Create new script with cache-busting
+        const script = document.createElement('script');
+        script.src = `https://www.tiktok.com/embed.js?v=${Date.now()}`;
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error('Failed to load TikTok script'));
+
+        // Append to body instead of head
+        document.body.appendChild(script);
+      });
+    };
+
+    const initializeTikTokEmbeds = async () => {
+      try {
+        // Wait for script to load
+        await loadTikTokScript();
+
+        // Wait a bit for the script to initialize
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
+        // Try to render embeds with retry logic
+        const attemptRender = () => {
+          if ((window as any).tiktokEmbed?.lib?.render) {
+            console.log('TikTok embeds initialized successfully');
+            (window as any).tiktokEmbed.lib.render();
+            return true;
+          }
+          return false;
+        };
+
+        // Retry logic
+        const retry = () => {
+          if (retryCount < maxRetries) {
+            retryCount++;
+            console.log(`Retrying TikTok embed initialization (${retryCount}/${maxRetries})`);
+
+            if (!attemptRender()) {
+              setTimeout(retry, 1000);
+            }
+          } else {
+            console.error('Failed to initialize TikTok embeds after maximum retries');
+          }
+        };
+
+        if (!attemptRender()) {
+          retry();
+        }
+
+      } catch (error) {
+        console.error('Error loading TikTok script:', error);
+        // Retry the entire process
+        if (retryCount < maxRetries) {
+          setTimeout(initializeTikTokEmbeds, 2000);
+        }
+      }
+    };
+
+    // Start initialization after component mounts
+    const timer = setTimeout(initializeTikTokEmbeds, 100);
+
+    return () => {
+      clearTimeout(timer);
+      // Clean up script on unmount
+      const script = document.querySelector('script[src*="tiktok.com/embed.js"]');
+      if (script) {
+        script.remove();
+      }
+    };
   }, []);
 
   return (
