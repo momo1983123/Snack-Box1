@@ -147,6 +147,8 @@
   .tiktok-embed-container {
     position: relative;
     will-change: transform;
+    height: 600px; /* Fixed height to cut off text content */
+    overflow: hidden; /* Hide content that extends beyond the height */
   }
 
   /* Hide TikTok text content while preserving functionality */
