@@ -366,7 +366,7 @@ export default function Index() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 justify-items-center max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row md:flex-wrap justify-center items-start gap-12 md:gap-16 lg:gap-20 max-w-5xl mx-auto">
             {/* First TikTok Video */}
             <div
               className="tiktok-embed-container"
