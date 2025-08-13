@@ -127,17 +127,20 @@ export default function Index() {
     const loadTikTokScript = () => {
       return new Promise<void>((resolve, reject) => {
         // Check if script already exists
-        const existingScript = document.querySelector('script[src*="tiktok.com/embed.js"]');
+        const existingScript = document.querySelector(
+          'script[src*="tiktok.com/embed.js"]',
+        );
         if (existingScript) {
           existingScript.remove();
         }
 
         // Create new script with cache-busting
-        const script = document.createElement('script');
+        const script = document.createElement("script");
         script.src = `https://www.tiktok.com/embed.js?v=${Date.now()}`;
         script.async = true;
         script.onload = () => resolve();
-        script.onerror = () => reject(new Error('Failed to load TikTok script'));
+        script.onerror = () =>
+          reject(new Error("Failed to load TikTok script"));
 
         // Append to body instead of head
         document.body.appendChild(script);
@@ -150,12 +153,12 @@ export default function Index() {
         await loadTikTokScript();
 
         // Wait a bit for the script to initialize
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         // Try to render embeds with retry logic
         const attemptRender = () => {
           if ((window as any).tiktokEmbed?.lib?.render) {
-            console.log('TikTok embeds initialized successfully');
+            console.log("TikTok embeds initialized successfully");
             (window as any).tiktokEmbed.lib.render();
             return true;
           }
@@ -166,22 +169,25 @@ export default function Index() {
         const retry = () => {
           if (retryCount < maxRetries) {
             retryCount++;
-            console.log(`Retrying TikTok embed initialization (${retryCount}/${maxRetries})`);
+            console.log(
+              `Retrying TikTok embed initialization (${retryCount}/${maxRetries})`,
+            );
 
             if (!attemptRender()) {
               setTimeout(retry, 1000);
             }
           } else {
-            console.error('Failed to initialize TikTok embeds after maximum retries');
+            console.error(
+              "Failed to initialize TikTok embeds after maximum retries",
+            );
           }
         };
 
         if (!attemptRender()) {
           retry();
         }
-
       } catch (error) {
-        console.error('Error loading TikTok script:', error);
+        console.error("Error loading TikTok script:", error);
         // Retry the entire process
         if (retryCount < maxRetries) {
           setTimeout(initializeTikTokEmbeds, 2000);
@@ -195,7 +201,9 @@ export default function Index() {
     return () => {
       clearTimeout(timer);
       // Clean up script on unmount
-      const script = document.querySelector('script[src*="tiktok.com/embed.js"]');
+      const script = document.querySelector(
+        'script[src*="tiktok.com/embed.js"]',
+      );
       if (script) {
         script.remove();
       }
@@ -204,7 +212,7 @@ export default function Index() {
 
   // Reinitialize TikTok embeds when the section becomes visible
   useEffect(() => {
-    const tiktokSection = document.querySelector('.tiktok-section');
+    const tiktokSection = document.querySelector(".tiktok-section");
     if (!tiktokSection) return;
 
     const observer = new IntersectionObserver(
@@ -214,14 +222,16 @@ export default function Index() {
             // Wait a bit, then try to reinitialize
             setTimeout(() => {
               if ((window as any).tiktokEmbed?.lib?.render) {
-                console.log('Reinitializing TikTok embeds on section visibility');
+                console.log(
+                  "Reinitializing TikTok embeds on section visibility",
+                );
                 (window as any).tiktokEmbed.lib.render();
               }
             }, 500);
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(tiktokSection);
