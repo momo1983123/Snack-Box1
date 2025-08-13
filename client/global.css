@@ -178,6 +178,7 @@
     max-width: 325px;
     margin: 0 auto;
     contain: layout style paint;
+    max-height: 580px; /* Constrain iframe height */
   }
 
   .tiktok-embed {
