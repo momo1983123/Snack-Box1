@@ -151,11 +151,22 @@
 
   /* Hide TikTok text content while preserving functionality */
   .tiktok-embed blockquote section {
-    position: absolute !important;
-    left: -9999px !important;
-    width: 1px !important;
-    height: 1px !important;
-    overflow: hidden !important;
+    display: none !important;
+  }
+
+  /* Hide all text elements within TikTok embeds */
+  .tiktok-embed blockquote {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    min-height: 0 !important;
+  }
+
+  /* Hide any text that might appear after the iframe */
+  .tiktok-embed blockquote::after,
+  .tiktok-embed blockquote::before {
+    display: none !important;
   }
 
   /* Optimized TikTok iframe styles */
