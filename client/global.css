@@ -147,15 +147,36 @@
   .tiktok-embed-container {
     position: relative;
     will-change: transform;
+    height: 600px; /* Fixed height to cut off text content */
+    overflow: hidden; /* Hide content that extends beyond the height */
+    /* Remove scrollbars */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  /* Hide scrollbars for WebKit browsers */
+  .tiktok-embed-container::-webkit-scrollbar {
+    display: none;
   }
 
   /* Hide TikTok text content while preserving functionality */
   .tiktok-embed blockquote section {
-    position: absolute !important;
-    left: -9999px !important;
-    width: 1px !important;
-    height: 1px !important;
-    overflow: hidden !important;
+    display: none !important;
+  }
+
+  /* Hide all text elements within TikTok embeds */
+  .tiktok-embed blockquote {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    min-height: 0 !important;
+  }
+
+  /* Hide any text that might appear after the iframe */
+  .tiktok-embed blockquote::after,
+  .tiktok-embed blockquote::before {
+    display: none !important;
   }
 
   /* Optimized TikTok iframe styles */
@@ -165,11 +186,30 @@
     max-width: 325px;
     margin: 0 auto;
     contain: layout style paint;
+    max-height: 580px; /* Constrain iframe height */
+    /* Remove scrollbars */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  /* Hide scrollbars for WebKit browsers */
+  .tiktok-embed-container iframe::-webkit-scrollbar {
+    display: none;
   }
 
   .tiktok-embed {
     display: flex;
     justify-content: center;
+    height: 100%;
+    overflow: hidden;
+    /* Remove scrollbars */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+  }
+
+  /* Hide scrollbars for WebKit browsers */
+  .tiktok-embed::-webkit-scrollbar {
+    display: none;
   }
 
   .tiktok-embed blockquote {
@@ -177,6 +217,16 @@
     padding: 0 !important;
     border: none !important;
     background: transparent !important;
+    max-height: 580px !important; /* Constrain blockquote height */
+    overflow: hidden !important;
+    /* Remove scrollbars */
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* Internet Explorer 10+ */
+  }
+
+  /* Hide scrollbars for WebKit browsers */
+  .tiktok-embed blockquote::-webkit-scrollbar {
+    display: none !important;
   }
 
   .card-enhanced {
